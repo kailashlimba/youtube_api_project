@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: .
+    working_dir: /app
+    ports:
+      - "5000:5000"
+    environment:
+      YOUTUBE_API_KEYS: "AIzaSyAgVxZae2CvbTx4oF52AHRQ3owaNN8xv-I" 
+      SEARCH_QUERY: "cricket"
+      FETCH_INTERVAL: "10"
+    volumes:
+      - .:/app
+    command: ["python", "run.py"]
