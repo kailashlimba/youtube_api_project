@@ -7,6 +7,19 @@ dashboard_bp = Blueprint("dashboard", __name__)
 
 @dashboard_bp.route("/")
 def dashboard():
+    """
+    Renders the dashboard UI with optional search and sorting.
+
+    - Accepts query parameters:
+        - 'q' for search (can be partial keywords)
+        - 'sort' for sorting by published date ('asc' or 'desc')
+    - Filters videos by matching all tokens in title or description.
+    - Sorts the results based on the published date.
+    - Renders the 'dashboard.html' template with the filtered video list.
+
+    Returns:
+        Rendered HTML page with video cards and search/sort UI.
+    """
     search_query = request.args.get("q", "")
     sort_order = request.args.get("sort", "desc")
 

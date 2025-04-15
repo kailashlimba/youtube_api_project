@@ -4,6 +4,15 @@ from app.models import Video, db
 from flask import current_app
 
 def fetch_videos():
+    """
+    Fetches the latest videos from YouTube based on the configured search query.
+
+    - Loops through available API keys to handle quota limits.
+    - Uses YouTube Data API v3 to retrieve videos sorted by publish date.
+    - Filters out duplicate videos using their YouTube video ID.
+    - Saves only new videos to the database.
+    
+    """
     keys = current_app.config["YOUTUBE_API_KEYS"]
     search_query = current_app.config["SEARCH_QUERY"]
     published_after = (datetime.utcnow() - timedelta(seconds=current_app.config["FETCH_INTERVAL"])).isoformat("T") + "Z"
@@ -37,4 +46,3 @@ def fetch_videos():
                     db.session.add(video)
             db.session.commit()
             break
-        

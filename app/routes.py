@@ -7,6 +7,20 @@ bp = Blueprint("api", __name__)
 
 @bp.route("/videos", methods=["GET"])
 def get_videos():
+    """
+    API endpoint to return a paginated list of stored YouTube videos.
+
+    Query Parameters:
+        - page (int): Page number to retrieve (default: 1)
+        - per_page (int): Number of videos per page (default: 10)
+
+    Returns:
+        JSON response containing:
+            - videos: List of video dictionaries
+            - total: Total number of videos
+            - pages: Total number of pages
+            - page: Current page number
+    """
     page = int(request.args.get("page", 1))
     per_page = int(request.args.get("per_page", 10))
     videos = Video.query.order_by(Video.published_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
@@ -20,6 +34,21 @@ def get_videos():
 
 @bp.route("/search", methods=["GET"])
 def search_videos():
+    """
+    API endpoint to search videos by title or description using keyword tokens.
+
+    Query Parameters:
+        - q (str): Search query string (split into tokens)
+        - page (int): Page number to retrieve (default: 1)
+        - per_page (int): Number of results per page (default: 10)
+
+    Returns:
+        JSON response containing:
+            - videos: List of matched videos
+            - total: Total number of matched results
+            - pages: Total number of pages
+            - page: Current page number
+    """
     query = request.args.get("q", "").strip()
     page = int(request.args.get("page", 1))
     per_page = int(request.args.get("per_page", 10))
